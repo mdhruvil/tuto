@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev fiberplane"
+    "dev": "turbo dev fiberplane",
+    "ui": "pnpm --filter @tuto/web run ui"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",

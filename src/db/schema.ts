@@ -1,9 +1,12 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
   integer,
   timestamp,
   boolean,
+  uniqueIndex,
+  serial,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -15,6 +18,64 @@ export const user = pgTable("user", {
   createdAt: timestamp("createdAt").notNull(),
   updatedAt: timestamp("updatedAt").notNull(),
 });
+
+export const userRelations = relations(user, ({ many }) => ({
+  knowledgeBases: many(knowledgeBase),
+}));
+
+export const knowledgeBase = pgTable(
+  "knowledge_base",
+  {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    description: text("description"),
+    createdBy: text("createdBy")
+      .notNull()
+      .references(() => user.id),
+    createdAt: timestamp("createdAt").notNull(),
+    updatedAt: timestamp("updatedAt").notNull(),
+  },
+  (table) => ({
+    createdByIdx: uniqueIndex("createdByIdx").on(table.createdBy),
+  })
+);
+
+export const knowledgeBaseRelations = relations(
+  knowledgeBase,
+  ({ one, many }) => ({
+    createdBy: one(user, {
+      fields: [knowledgeBase.createdBy],
+      references: [user.id],
+    }),
+    documents: many(document),
+  })
+);
+
+export const document = pgTable(
+  "document",
+  {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    url: text("url").notNull(),
+    knowledgeBaseId: integer("knowledgeBaseId")
+      .notNull()
+      .references(() => knowledgeBase.id),
+    createdAt: timestamp("createdAt").notNull(),
+    updatedAt: timestamp("updatedAt").notNull(),
+  },
+  (table) => ({
+    knowledgeBaseIdIdx: uniqueIndex("knowledgeBaseIdIdx").on(
+      table.knowledgeBaseId
+    ),
+  })
+);
+
+export const documentRelations = relations(document, ({ one }) => ({
+  knowledgeBase: one(knowledgeBase, {
+    fields: [document.knowledgeBaseId],
+    references: [knowledgeBase.id],
+  }),
+}));
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),

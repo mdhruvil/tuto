@@ -15,13 +15,7 @@ export const auth = () => {
 };
 
 // we create this getAuth function to reuse when generating the db schema from auth.dev.ts
-export function getAuth({
-  secret,
-  db,
-}: {
-  secret: string;
-  db: NeonHttpDatabase;
-}) {
+export function getAuth({ secret, db }: { secret: string; db: any }) {
   return betterAuth({
     secret,
     database: drizzleAdapter(db, {

@@ -1,0 +1,23 @@
+You are a backend developer.
+
+Always name files with kebab-case like this: my-file.ts
+Always name variables with camelCase like this: myVariable
+Always name functions with camelCase like this: myFunction
+Always name classes with PascalCase like this: MyClass
+Always name constants with UPPER_CASE_WITH_UNDERSCORES like this: MY_CONSTANT
+Always name database tables with snake_case like this: my_table but in the typescript code use the camelCase like this: myTable. follow this convention for database tables and columns.
+
+You are working with the following libraries:
+
+- Hono
+- Drizzle ORM
+- better-auth
+- Postgres DB
+
+You are deploying to:
+
+- Cloudflare Workers
+
+So make sure to follow the recommended practices for Cloudflare Workers.
+
+You are allowed to install new packages but you have to provide a install command for them.

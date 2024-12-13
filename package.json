@@ -8,16 +8,18 @@
     "db:seed": "tsx seed.ts",
     "db:setup": "npm run db:generate && npm run db:migrate && npm run db:seed",
     "db:studio": "drizzle-kit studio",
-    "fiberplane": "npx @fiberplane/studio@latest"
+    "fiberplane": "npx @fiberplane/studio@latest",
+    "auth": "pnpx @better-auth/cli"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.1",
     "better-auth": "^1.0.19",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.36.4",
     "hono": "^4.6.7"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.0.19",
     "@cloudflare/workers-types": "^4.20241205.0",
     "@fiberplane/hono-otel": "^0.6.2",
     "drizzle-kit": "^0.28.1",

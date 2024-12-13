@@ -7,6 +7,7 @@ import {
   boolean,
   uniqueIndex,
   serial,
+  index,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -40,7 +41,7 @@ export const knowledgeBase = pgTable(
     deletedAt: timestamp("deletedAt"),
   },
   (table) => ({
-    createdByIdx: uniqueIndex("createdByIdx").on(table.createdBy),
+    createdByIdx: index("createdByIdx").on(table.createdBy),
   })
 );
 
@@ -75,9 +76,7 @@ export const document = pgTable(
     deletedAt: timestamp("deletedAt"),
   },
   (table) => ({
-    knowledgeBaseIdIdx: uniqueIndex("knowledgeBaseIdIdx").on(
-      table.knowledgeBaseId
-    ),
+    knowledgeBaseIdIdx: index("knowledgeBaseIdIdx").on(table.knowledgeBaseId),
   })
 );
 

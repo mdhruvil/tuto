@@ -16,6 +16,13 @@ export class DBKnowledgeBase {
         eq(knowledgeBase.createdBy, userId),
         isNull(knowledgeBase.deletedAt)
       ),
+      columns: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
     return returned;
   }
@@ -26,6 +33,13 @@ export class DBKnowledgeBase {
         eq(knowledgeBase.createdBy, userId),
         isNull(knowledgeBase.deletedAt)
       ),
+      columns: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
     return returned;
   }
@@ -39,7 +53,7 @@ export class DBKnowledgeBase {
     userId: string;
     data: KnowledgeBaseUpdate;
   }) {
-    const updated = await db()
+    const [updated] = await db()
       .update(knowledgeBase)
       .set(data)
       .where(

@@ -1,10 +1,10 @@
 import { instrument } from "@fiberplane/hono-otel";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
 import { Hono } from "hono";
-import { user } from "./db/schema";
 import { contextStorage } from "hono/context-storage";
+import { HTTPException } from "hono/http-exception";
+import { ZodError } from "zod";
 import { auth } from "./lib/auth";
+import { knowledgeBaseRouter } from "./routes/knowledge-base";
 
 type Bindings = {
   DATABASE_URL: string;
@@ -44,13 +44,24 @@ app.get("/", (c) => {
   return c.text("Honc! 🪿");
 });
 
-app.get("/api/users", async (c) => {
-  const sql = neon(c.env.DATABASE_URL);
-  const db = drizzle(sql);
+app.route("/knowledge-base", knowledgeBaseRouter);
 
-  return c.json({
-    users: await db.select().from(user),
-  });
+app.onError((err, c) => {
+  console.error(err);
+  if (err instanceof ZodError) {
+    return c.json(
+      {
+        message: "Validation failed",
+        errors: err.flatten(),
+        success: false,
+      },
+      400
+    );
+  }
+  if (err instanceof HTTPException) {
+    return c.json({ message: err.message, success: false }, err.status);
+  }
+  return c.json({ message: "Internal server error", success: false }, 500);
 });
 
 export default instrument(app);

@@ -50,10 +50,12 @@ export class DBDocument {
     id,
     userId,
     data,
+    knowledgeBaseId,
   }: {
     id: number;
     userId: string;
     data: DocumentUpdate;
+    knowledgeBaseId: number;
   }) {
     const updated = await db()
       .update(document)
@@ -62,6 +64,7 @@ export class DBDocument {
         and(
           eq(document.id, id),
           eq(document.createdBy, userId),
+          eq(document.knowledgeBaseId, knowledgeBaseId),
           isNull(document.deletedAt)
         )
       )
@@ -69,11 +72,25 @@ export class DBDocument {
     return updated;
   }
 
-  static async delete({ id, userId }: { id: number; userId: string }) {
+  static async delete({
+    id,
+    userId,
+    knowledgeBaseId,
+  }: {
+    id: number;
+    userId: string;
+    knowledgeBaseId: number;
+  }) {
     const deleted = await db()
       .update(document)
       .set({ deletedAt: new Date() })
-      .where(and(eq(document.id, id), eq(document.createdBy, userId)));
+      .where(
+        and(
+          eq(document.id, id),
+          eq(document.createdBy, userId),
+          eq(document.knowledgeBaseId, knowledgeBaseId)
+        )
+      );
     return deleted;
   }
 }

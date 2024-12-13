@@ -11,7 +11,6 @@ import { z } from "zod";
 const app = new Hono<Env>();
 
 app.get("/", async (c) => {
-  const session = await c.get("session");
   const user = await c.get("user");
 
   if (!user) {

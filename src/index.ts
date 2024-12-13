@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception";
 import { ZodError } from "zod";
 import { auth } from "./lib/auth";
 import { knowledgeBaseRouter } from "./routes/knowledge-base";
+import { documentRouter } from "./routes/document";
 
 type Bindings = {
   DATABASE_URL: string;
@@ -45,6 +46,7 @@ app.get("/", (c) => {
 });
 
 app.route("/knowledge-base", knowledgeBaseRouter);
+app.route("/knowledge-base/:knowledgeBaseId/document", documentRouter);
 
 app.onError((err, c) => {
   console.error(err);

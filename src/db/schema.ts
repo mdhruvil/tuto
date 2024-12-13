@@ -32,8 +32,12 @@ export const knowledgeBase = pgTable(
     createdBy: text("createdBy")
       .notNull()
       .references(() => user.id),
-    createdAt: timestamp("createdAt").notNull(),
-    updatedAt: timestamp("updatedAt").notNull(),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt")
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+    deletedAt: timestamp("deletedAt"),
   },
   (table) => ({
     createdByIdx: uniqueIndex("createdByIdx").on(table.createdBy),
@@ -60,8 +64,15 @@ export const document = pgTable(
     knowledgeBaseId: integer("knowledgeBaseId")
       .notNull()
       .references(() => knowledgeBase.id),
-    createdAt: timestamp("createdAt").notNull(),
-    updatedAt: timestamp("updatedAt").notNull(),
+    createdBy: text("createdBy")
+      .notNull()
+      .references(() => user.id),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt")
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+    deletedAt: timestamp("deletedAt"),
   },
   (table) => ({
     knowledgeBaseIdIdx: uniqueIndex("knowledgeBaseIdIdx").on(

@@ -20,9 +20,15 @@ importers:
       drizzle-orm:
         specifier: ^0.36.4
         version: 0.36.4(@cloudflare/workers-types@4.20241205.0)(@neondatabase/serverless@0.10.4)(@opentelemetry/api@1.9.0)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(better-sqlite3@11.7.0)(kysely@0.27.5)(prisma@5.22.0)
+      drizzle-zod:
+        specifier: ^0.6.0
+        version: 0.6.0(drizzle-orm@0.36.4(@cloudflare/workers-types@4.20241205.0)(@neondatabase/serverless@0.10.4)(@opentelemetry/api@1.9.0)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(better-sqlite3@11.7.0)(kysely@0.27.5)(prisma@5.22.0))(zod@3.24.1)
       hono:
         specifier: ^4.6.7
         version: 4.6.13
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@better-auth/cli':
         specifier: ^1.0.19
@@ -1594,6 +1600,12 @@ packages:
     peerDependenciesMeta:
       drizzle-orm:
         optional: true
+
+  drizzle-zod@0.6.0:
+    resolution: {integrity: sha512-7K1k7Y/5Jw9D4cTlrHL3mRTLg3oaglbi4VvBIYmSAtMvYkgqvusPtra7cnntMCe1r1cBcwxhlEkfiNdU23lp2g==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: '>=3.0.0'
 
   electron-to-chromium@1.5.73:
     resolution: {integrity: sha512-8wGNxG9tAG5KhGd3eeA0o6ixhiNdgr0DcHWm85XPCphwZgD1lIEoi6t3VERayWao7SF7AAZTw6oARGJeVjH8Kg==}
@@ -3488,6 +3500,11 @@ snapshots:
       pure-rand: 6.1.0
     optionalDependencies:
       drizzle-orm: 0.36.4(@cloudflare/workers-types@4.20241205.0)(@neondatabase/serverless@0.10.4)(@opentelemetry/api@1.9.0)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(better-sqlite3@11.7.0)(kysely@0.27.5)(prisma@5.22.0)
+
+  drizzle-zod@0.6.0(drizzle-orm@0.36.4(@cloudflare/workers-types@4.20241205.0)(@neondatabase/serverless@0.10.4)(@opentelemetry/api@1.9.0)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(better-sqlite3@11.7.0)(kysely@0.27.5)(prisma@5.22.0))(zod@3.24.1):
+    dependencies:
+      drizzle-orm: 0.36.4(@cloudflare/workers-types@4.20241205.0)(@neondatabase/serverless@0.10.4)(@opentelemetry/api@1.9.0)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(better-sqlite3@11.7.0)(kysely@0.27.5)(prisma@5.22.0)
+      zod: 3.24.1
 
   electron-to-chromium@1.5.73: {}
 

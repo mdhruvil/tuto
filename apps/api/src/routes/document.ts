@@ -3,7 +3,7 @@ import { Env } from "..";
 import { DBDocument } from "../db/queries/documents";
 import { zValidator } from "../middleware/zod";
 import { z } from "zod";
-import { documentInsertSchema, documentUpdateSchema } from "../db/validators";
+import { documentInsertSchema, documentUpdateSchema } from "@tuto/shared";
 
 const app = new Hono<Env>();
 

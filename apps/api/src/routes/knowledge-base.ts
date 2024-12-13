@@ -2,11 +2,11 @@ import { Hono } from "hono";
 import { Env } from "..";
 import { DBKnowledgeBase } from "../db/queries/knowledge-base";
 import { zValidator } from "../middleware/zod";
+import { z } from "zod";
 import {
   knowledgeBaseInsertSchema,
   knowledgeBaseUpdateSchema,
-} from "../db/validators";
-import { z } from "zod";
+} from "@tuto/shared";
 
 const app = new Hono<Env>();
 

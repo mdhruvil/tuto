@@ -1,6 +1,5 @@
+import { CreateKnowledgeBaseButton } from "@/components/create-knowledge-base-button";
 import { KnowledgeBaseCard } from "@/components/knowledge-base-card";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 // Temporary mock data - replace with real data later
 const mockKnowledgeBases = [
@@ -54,10 +53,7 @@ export function KnowledgeBases() {
           <h2 className="text-2xl font-bold text-foreground">
             Knowledge Bases
           </h2>
-          <Button variant="default" className="w-full sm:w-auto">
-            <Plus className="mr-2 h-4 w-4" />
-            New Knowledge Base
-          </Button>
+          <CreateKnowledgeBaseButton />
         </div>
       )}
 
@@ -81,13 +77,10 @@ export function KnowledgeBases() {
             No knowledge bases yet
           </h3>
           <p className="text-muted-foreground max-w-md">
-            Create your first knowledge base to get started organizing your
-            team's documentation
+            Create your first knowledge base to get started chatting with your
+            documents
           </p>
-          <Button className="w-full sm:w-auto">
-            <Plus className="mr-2 h-4 w-4" />
-            Create Knowledge Base
-          </Button>
+          <CreateKnowledgeBaseButton />
         </div>
       )}
     </div>

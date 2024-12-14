@@ -1,3 +1,5 @@
+import { formatDate } from "@/lib/utils";
+
 interface KnowledgeBaseCardProps {
   title: string;
   description: string;
@@ -24,7 +26,7 @@ export function KnowledgeBaseCard({
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-xs sm:text-sm text-muted-foreground pt-3 sm:pt-4 border-t border-border mt-3 sm:mt-4">
         <span>{documentsCount} documents</span>
-        <span>Updated {lastUpdated.toLocaleDateString()}</span>
+        <span>Updated {formatDate(lastUpdated)}</span>
       </div>
     </div>
   );

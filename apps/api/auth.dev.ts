@@ -11,4 +11,5 @@ const db = drizzle(sql);
 export const auth = getAuth({
   secret: process.env.BETTER_AUTH_SECRET!,
   db,
+  trustedOrigins: process.env.TRUSTED_ORIGINS!.split(","),
 });

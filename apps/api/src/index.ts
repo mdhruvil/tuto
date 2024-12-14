@@ -6,10 +6,11 @@ import { ZodError } from "zod";
 import { auth } from "./lib/auth";
 import { documentRouter } from "./routes/document";
 import { knowledgeBaseRouter } from "./routes/knowledge-base";
-
+import { cors } from "hono/cors";
 type Bindings = {
   DATABASE_URL: string;
   BETTER_AUTH_SECRET: string;
+  TRUSTED_ORIGINS: string;
 };
 
 type Variables = {
@@ -24,6 +25,16 @@ export type Env = {
 
 const app = new Hono<Env>({ strict: true })
   .basePath("/api")
+  .use("*", (c, next) =>
+    cors({
+      origin: c.env.TRUSTED_ORIGINS.split(","),
+      allowHeaders: ["Content-Type", "Authorization"],
+      allowMethods: ["POST", "GET", "OPTIONS"],
+      exposeHeaders: ["Content-Length"],
+      maxAge: 600,
+      credentials: true,
+    })(c, next)
+  )
   .use("*", contextStorage())
   .use("*", async (c, next) => {
     const session = await auth().api.getSession({ headers: c.req.raw.headers });

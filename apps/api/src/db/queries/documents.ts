@@ -1,10 +1,10 @@
 import { and, isNull, eq } from "drizzle-orm";
 import { db } from "..";
 import { document } from "../schema";
-import { DocumentInsert, DocumentUpdate } from "../validators";
+import { DocumentInsert, DocumentUpdate } from "@tuto/shared";
 
 export class DBDocument {
-  static async create({ data }: { data: DocumentInsert }) {
+  static async create({ data }: { data: DocumentInsert[] }) {
     const inserted = await db().insert(document).values(data).returning();
     return inserted;
   }

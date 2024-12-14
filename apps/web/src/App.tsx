@@ -1,13 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthLayout } from "@/routes/auth/layout";
 import { SignIn } from "@/routes/auth/sign-in";
 import { SignUp } from "@/routes/auth/sign-up";
-import { Toaster } from "@/components/ui/sonner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DashboardLayout } from "./routes/dashboard/layout";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { AuthGuard } from "./components/auth-guard";
+import { queryClient } from "./lib/query-client";
+import { KnowledgeBase } from "./routes/dashboard/[knowLedgebaseId]";
 import { KnowledgeBases } from "./routes/dashboard/knowledge-bases";
-import { BasicUploaderDemo } from "./routes/dashboard/[knowLedgebaseId]";
+import { DashboardLayout } from "./routes/dashboard/layout";
 
 const router = createBrowserRouter([
   {
@@ -37,14 +38,12 @@ const router = createBrowserRouter([
         element: <KnowledgeBases />,
       },
       {
-        path: ":knowledgebaseId",
-        element: <BasicUploaderDemo />,
+        path: "knowledge-bases/:knowledgebaseId",
+        element: <KnowledgeBase />,
       },
     ],
   },
 ]);
-
-const queryClient = new QueryClient();
 
 export default function App() {
   return (

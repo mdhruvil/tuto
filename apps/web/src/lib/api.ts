@@ -17,5 +17,10 @@ export const { api } = hc<AppType>(import.meta.env.VITE_API_URL, {
 });
 
 export const CACHE_KEYS = {
-  knowledgeBases: () => "knowledge-bases",
+  knowledgeBases: () => ["knowledge-bases"],
+  knowledgeBase: (knowledgebaseId?: string) => [
+    "knowledge-base",
+    knowledgebaseId,
+  ],
+  documents: (knowledgebaseId?: string) => ["documents", knowledgebaseId],
 };

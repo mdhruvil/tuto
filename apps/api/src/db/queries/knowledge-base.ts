@@ -23,6 +23,17 @@ export class DBKnowledgeBase {
         createdAt: true,
         updatedAt: true,
       },
+      with: {
+        documents: {
+          columns: {
+            id: true,
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     });
     return returned;
   }

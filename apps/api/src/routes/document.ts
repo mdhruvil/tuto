@@ -53,19 +53,28 @@ const app = new Hono<Env>()
   .post(
     "/",
     zValidator("param", z.object({ knowledgeBaseId: z.coerce.number() })),
-    zValidator("json", documentInsertSchema.omit({ createdBy: true })),
+    zValidator(
+      "json",
+      z.object({
+        documents: z.array(
+          documentInsertSchema.omit({ createdBy: true, knowledgeBaseId: true })
+        ),
+      })
+    ),
     async (c) => {
       const user = await c.get("user");
 
       if (!user) {
         return c.json({ message: "Unauthorized", success: false }, 401);
       }
+      const { knowledgeBaseId } = c.req.valid("param");
 
       const document = await DBDocument.create({
-        data: {
-          ...c.req.valid("json"),
+        data: c.req.valid("json").documents.map((document) => ({
+          ...document,
           createdBy: user.id,
-        },
+          knowledgeBaseId: knowledgeBaseId,
+        })),
       });
 
       return c.json({ data: document, success: true }, 201);

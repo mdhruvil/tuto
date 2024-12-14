@@ -3,6 +3,7 @@ import { CreateKnowledgeBaseButton } from "@/components/create-knowledge-base-bu
 import { KnowledgeBaseCard } from "@/components/knowledge-base-card";
 import { useKnowledgeBases } from "@/hooks/use-knowledge-base";
 import { AlertCircleIcon } from "lucide-react";
+import { Link } from "react-router";
 
 export function KnowledgeBases() {
   const { data, isLoading, error, isError } = useKnowledgeBases();
@@ -33,13 +34,15 @@ export function KnowledgeBases() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.map((kb) => (
-          <KnowledgeBaseCard
-            key={kb.id}
-            title={kb.name}
-            description={kb.description ?? ""}
-            documentsCount={kb.documentsCount}
-            lastUpdated={new Date(kb.updatedAt)}
-          />
+          <Link key={kb.id} to={`/dashboard/knowledge-bases/${kb.id}`}>
+            <KnowledgeBaseCard
+              key={kb.id}
+              title={kb.name}
+              description={kb.description ?? ""}
+              documentsCount={kb.documentsCount}
+              lastUpdated={new Date(kb.updatedAt)}
+            />
+          </Link>
         ))}
       </div>
     </div>

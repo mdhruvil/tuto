@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DashboardLayout } from "./routes/dashboard/layout";
 import { AuthGuard } from "./components/auth-guard";
+import { KnowledgeBases } from "./routes/dashboard/knowledge-bases";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,12 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </AuthGuard>
     ),
+    children: [
+      {
+        path: "",
+        element: <KnowledgeBases />,
+      },
+    ],
   },
 ]);
 

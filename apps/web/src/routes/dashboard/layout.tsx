@@ -1,10 +1,22 @@
-import { signOut } from "@/auth/auth-client";
-import { Button } from "@/components/ui/button";
+import { UserProfileButton } from "@/components/user-profile-button";
+import { Outlet } from "react-router";
 
 export function DashboardLayout() {
   return (
-    <div>
-      <Button onClick={() => signOut()}>Sign out</Button>
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border">
+        <div className="mx-auto px-6 md:px-0 py-3 max-w-6xl lg:max-w-7xl">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold text-foreground">Tuto</h1>
+
+            <UserProfileButton />
+          </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-6 md:px-0 py-8 max-w-6xl lg:max-w-7xl">
+        <Outlet />
+      </main>
     </div>
   );
 }

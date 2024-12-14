@@ -72,4 +72,6 @@ const app = new Hono<Env>({ strict: true })
     return c.json({ message: "Internal server error", success: false }, 500);
   });
 
+export type AppType = typeof app;
+
 export default instrument(app);

@@ -1,7 +1,7 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "../index";
-import { knowledgeBase } from "../schema";
-import { KnowledgeBaseInsert, KnowledgeBaseUpdate } from "../validators";
+import { document, knowledgeBase } from "../schema";
+import { KnowledgeBaseInsert, KnowledgeBaseUpdate } from "@tuto/shared";
 
 export class DBKnowledgeBase {
   static async create({ data }: { data: KnowledgeBaseInsert }) {
@@ -40,8 +40,20 @@ export class DBKnowledgeBase {
         createdAt: true,
         updatedAt: true,
       },
+      with: {
+        documents: {
+          where: isNull(document.deletedAt),
+          columns: {
+            id: true,
+          },
+        },
+      },
     });
-    return returned;
+    return returned.map((kb) => ({
+      ...kb,
+      documentsCount: kb.documents.length,
+      documents: undefined,
+    }));
   }
 
   static async update({

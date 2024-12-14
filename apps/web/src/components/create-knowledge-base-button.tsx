@@ -17,8 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateKnowledgeBase } from "@/hooks/knowledge-base-mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -30,6 +32,8 @@ const createKnowledgeBaseSchema = z.object({
 type CreateKnowledgeBaseValues = z.infer<typeof createKnowledgeBaseSchema>;
 
 export function CreateKnowledgeBaseButton() {
+  const createKnowledgeBase = useCreateKnowledgeBase();
+
   const form = useForm<CreateKnowledgeBaseValues>({
     resolver: zodResolver(createKnowledgeBaseSchema),
     defaultValues: {
@@ -38,13 +42,22 @@ export function CreateKnowledgeBaseButton() {
     },
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
   function onSubmit(data: CreateKnowledgeBaseValues) {
-    // TODO: Implement create knowledge base
-    console.log(data);
+    createKnowledgeBase.mutate({ json: data });
   }
 
   return (
-    <Dialog>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (createKnowledgeBase.isPending) {
+          return;
+        }
+        setIsOpen(open);
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="default" className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
@@ -95,7 +108,9 @@ export function CreateKnowledgeBaseButton() {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Create</Button>
+              <Button type="submit" loading={createKnowledgeBase.isPending}>
+                Create
+              </Button>
             </DialogFooter>
           </form>
         </Form>

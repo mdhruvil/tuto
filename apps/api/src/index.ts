@@ -7,10 +7,14 @@ import { auth } from "./lib/auth";
 import { documentRouter } from "./routes/document";
 import { knowledgeBaseRouter } from "./routes/knowledge-base";
 import { cors } from "hono/cors";
+import { createRouteHandler } from "uploadthing/server";
+import { fileHandlers, uploadRouter } from "./lib/ut";
 type Bindings = {
   DATABASE_URL: string;
   BETTER_AUTH_SECRET: string;
   TRUSTED_ORIGINS: string;
+  UPLOADTHING_TOKEN: string;
+  ENVIRONMENT: string;
 };
 
 type Variables = {
@@ -28,9 +32,6 @@ const app = new Hono<Env>({ strict: true })
   .use("*", (c, next) =>
     cors({
       origin: c.env.TRUSTED_ORIGINS.split(","),
-      allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["POST", "GET", "OPTIONS"],
-      exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
     })(c, next)
@@ -54,6 +55,10 @@ const app = new Hono<Env>({ strict: true })
   })
   .route("/knowledge-base", knowledgeBaseRouter)
   .route("/knowledge-base/:knowledgeBaseId/document", documentRouter)
+  .all("/ut", async (c) => {
+    const handlers = fileHandlers();
+    return handlers(c.req.raw);
+  })
   .onError((err, c) => {
     console.error(err);
     if (err instanceof ZodError) {

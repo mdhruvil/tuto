@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DashboardLayout } from "./routes/dashboard/layout";
 import { AuthGuard } from "./components/auth-guard";
 import { KnowledgeBases } from "./routes/dashboard/knowledge-bases";
+import { BasicUploaderDemo } from "./routes/dashboard/[knowLedgebaseId]";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <KnowledgeBases />,
+      },
+      {
+        path: ":knowledgebaseId",
+        element: <BasicUploaderDemo />,
       },
     ],
   },

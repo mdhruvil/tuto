@@ -5,10 +5,10 @@ import type { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Env } from "..";
 import { embed, embedMany } from "ai";
-import { desc, gt } from "drizzle-orm";
+import { desc, eq, gt } from "drizzle-orm";
 import { cosineDistance } from "drizzle-orm";
 import { sql } from "drizzle-orm";
-import { documentChunk } from "../db/schema";
+import { document, documentChunk } from "../db/schema";
 import { db } from "../db";
 
 /**
@@ -88,8 +88,20 @@ export const findRelevantContent = async (userQuery: string) => {
     userQueryEmbedded
   )})`;
   const similarGuides = await db()
-    .select({ name: documentChunk.pageContent, similarity })
+    .select({
+      name: documentChunk.pageContent,
+      similarity,
+      metadata: documentChunk.metadata,
+      documentId: documentChunk.documentId,
+      document: {
+        name: document.name,
+        url: document.url,
+        createdAt: document.createdAt,
+        knowledgeBaseId: document.knowledgeBaseId,
+      },
+    })
     .from(documentChunk)
+    .leftJoin(document, eq(documentChunk.documentId, document.id))
     .where(gt(similarity, 0.5))
     .orderBy((t) => desc(t.similarity))
     .limit(4);

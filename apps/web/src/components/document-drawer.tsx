@@ -62,8 +62,8 @@ export function DocumentDrawer({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button>
-          <FileTextIcon size={20} />
+        <Button variant="outline" size="icon" className="size-12">
+          <FileTextIcon />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-7xl mx-auto h-[calc(80vh)]">

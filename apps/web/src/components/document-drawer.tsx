@@ -14,6 +14,7 @@ import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { FileIcon } from "lucide-react";
 import { toast } from "sonner";
+import { DocumentViewerDrawer } from "./document-viewer-drawer";
 
 type DocumentDrawerProps = {
   documents: {
@@ -63,7 +64,7 @@ export function DocumentDrawer({
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="max-w-7xl mx-auto h-[calc(80vh)]">
+      <DrawerContent className="max-w-7xl mx-auto h-[80vh]">
         <div className="h-full overflow-y-auto">
           <DrawerHeader>
             <DrawerTitle>Documents</DrawerTitle>
@@ -125,18 +126,20 @@ export function DocumentDrawer({
                 <div>
                   <div className="grid gap-4">
                     {documents.map((doc) => (
-                      <div
+                      <DocumentViewerDrawer
                         key={doc.id}
-                        className="flex items-center p-4 border rounded-lg hover:bg-gray-50"
+                        document={{ name: doc.name, url: doc.url }}
                       >
-                        <FileIcon className="h-7 w-7 text-gray-400 mr-4" />
-                        <div className="flex-1">
-                          <h3 className="font-medium">{doc.name}</h3>
-                          <p className="text-sm text-gray-500">
-                            Uploaded {formatDate(new Date(doc.createdAt))}
-                          </p>
-                        </div>
-                      </div>
+                        <button className="flex items-center justify-start p-4 border rounded-lg hover:bg-gray-50">
+                          <FileIcon className="h-7 w-7 text-gray-400 mr-4" />
+                          <div className="flex flex-col items-start">
+                            <h3 className="font-medium">{doc.name}</h3>
+                            <p className="text-sm text-gray-500">
+                              Uploaded {formatDate(new Date(doc.createdAt))}
+                            </p>
+                          </div>
+                        </button>
+                      </DocumentViewerDrawer>
                     ))}
                   </div>
                 </div>

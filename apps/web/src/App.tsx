@@ -50,10 +50,10 @@ export default function App() {
   useEffect(() => {
     async function init() {
       const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-      const pdfjsWorker = await import(
+      const pdfjsWorkerLegacy = await import(
         "pdfjs-dist/legacy/build/pdf.worker.mjs?url"
       );
-      pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
+      pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerLegacy.default;
     }
     window.onload = () => {
       init();

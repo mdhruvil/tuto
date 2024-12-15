@@ -87,7 +87,7 @@ export const findRelevantContent = async (userQuery: string) => {
     documentChunk.embedding,
     userQueryEmbedded
   )})`;
-  const similarGuides = await db()
+  const [similarGuides] = await db()
     .select({
       name: documentChunk.pageContent,
       similarity,
@@ -104,6 +104,6 @@ export const findRelevantContent = async (userQuery: string) => {
     .leftJoin(document, eq(documentChunk.documentId, document.id))
     .where(gt(similarity, 0.5))
     .orderBy((t) => desc(t.similarity))
-    .limit(4);
+    .limit(1);
   return similarGuides;
 };

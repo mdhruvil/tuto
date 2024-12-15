@@ -32,11 +32,13 @@ export type Env = {
   Variables: Variables;
 };
 
-const app = new Hono<Env>({ strict: true })
+const app = new Hono<Env>({ strict: false })
   .basePath("/api")
   .use("*", (c, next) =>
     cors({
-      origin: "*",
+      origin: c.env.TRUSTED_ORIGINS.split(","),
+      maxAge: 60 * 60 * 24 * 30,
+      credentials: true,
     })(c, next)
   )
   .use("*", contextStorage())

@@ -8,13 +8,18 @@ import { lazy, useEffect } from "react";
 const AuthLayout = lazy(() => import("@/routes/auth/layout"));
 const SignIn = lazy(() => import("@/routes/auth/sign-in"));
 const SignUp = lazy(() => import("@/routes/auth/sign-up"));
-const DashboardLayout = lazy(() => import("./routes/dashboard/layout"));
-const KnowledgeBases = lazy(() => import("./routes/dashboard/knowledge-bases"));
+const DashboardLayout = lazy(() => import("@/routes/dashboard/layout"));
+const KnowledgeBases = lazy(() => import("@/routes/dashboard/knowledge-bases"));
 const KnowledgeBase = lazy(
-  () => import("./routes/dashboard/[knowLedgebaseId]")
+  () => import("@/routes/dashboard/[knowLedgebaseId]")
 );
+const Hero = lazy(() => import("@/components/hero"));
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Hero />,
+  },
   {
     path: "/auth",
     element: <AuthLayout />,

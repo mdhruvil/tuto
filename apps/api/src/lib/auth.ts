@@ -35,5 +35,10 @@ export function getAuth({
     },
     plugins: [openAPI({ path: "/ref" })],
     trustedOrigins,
+    advanced: {
+      defaultCookieAttributes: {
+        sameSite: "none",
+      },
+    },
   });
 }

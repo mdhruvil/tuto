@@ -49,6 +49,8 @@ export function KnowledgeBases() {
   );
 }
 
+export default KnowledgeBases;
+
 function KnowledgeBasesSkeleton() {
   return (
     <div className="space-y-6">

@@ -22,3 +22,5 @@ export function DashboardLayout() {
     </div>
   );
 }
+
+export default DashboardLayout;

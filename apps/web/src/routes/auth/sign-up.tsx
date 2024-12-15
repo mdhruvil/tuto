@@ -198,3 +198,5 @@ export function SignUp() {
     </Card>
   );
 }
+
+export default SignUp;

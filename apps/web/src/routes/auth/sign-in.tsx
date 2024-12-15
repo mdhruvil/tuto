@@ -157,3 +157,5 @@ export function SignIn() {
     </Card>
   );
 }
+
+export default SignIn;

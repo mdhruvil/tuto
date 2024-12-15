@@ -36,9 +36,7 @@ const app = new Hono<Env>({ strict: true })
   .basePath("/api")
   .use("*", (c, next) =>
     cors({
-      origin: c.env.TRUSTED_ORIGINS.split(","),
-      maxAge: 60 * 60 * 24 * 30,
-      credentials: true,
+      origin: "*",
     })(c, next)
   )
   .use("*", contextStorage())

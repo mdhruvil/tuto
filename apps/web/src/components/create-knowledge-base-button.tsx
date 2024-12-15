@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 
 const createKnowledgeBaseSchema = z.object({
@@ -33,6 +34,7 @@ type CreateKnowledgeBaseValues = z.infer<typeof createKnowledgeBaseSchema>;
 
 export function CreateKnowledgeBaseButton() {
   const createKnowledgeBase = useCreateKnowledgeBase();
+  const navigate = useNavigate();
 
   const form = useForm<CreateKnowledgeBaseValues>({
     resolver: zodResolver(createKnowledgeBaseSchema),
@@ -45,7 +47,15 @@ export function CreateKnowledgeBaseButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   function onSubmit(data: CreateKnowledgeBaseValues) {
-    createKnowledgeBase.mutate({ json: data });
+    createKnowledgeBase.mutate(
+      { json: data },
+      {
+        onSettled(data) {
+          if (!data) return;
+          navigate(`/dashboard/knowledge-bases/${data[0]?.id}`);
+        },
+      }
+    );
   }
 
   return (

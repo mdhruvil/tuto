@@ -1,5 +1,4 @@
 import { FileUploader } from "@/components/file-uploader";
-import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -11,10 +10,10 @@ import {
 import { useCreateDocument } from "@/hooks/use-document-mutations";
 import { useUploadFile } from "@/hooks/use-file-upload";
 import { formatDate } from "@/lib/utils";
-import { FileIcon, FileTextIcon } from "lucide-react";
-import { toast } from "sonner";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { FileIcon } from "lucide-react";
+import { toast } from "sonner";
 
 type DocumentDrawerProps = {
   documents: {
@@ -25,6 +24,7 @@ type DocumentDrawerProps = {
     url: string;
   }[];
   knowledgeBaseId: string;
+  children?: React.ReactNode;
 };
 
 /**
@@ -54,6 +54,7 @@ async function pdfToChunks(file: File) {
 export function DocumentDrawer({
   documents,
   knowledgeBaseId,
+  children,
 }: DocumentDrawerProps) {
   const hasDocuments = documents.length > 0;
   const createDocument = useCreateDocument({ knowledgeBaseId });
@@ -61,11 +62,7 @@ export function DocumentDrawer({
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="outline" size="icon" className="size-12">
-          <FileTextIcon />
-        </Button>
-      </DrawerTrigger>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="max-w-7xl mx-auto h-[calc(80vh)]">
         <div className="h-full overflow-y-auto">
           <DrawerHeader>

@@ -1,4 +1,5 @@
-import { api } from "@/lib/api";
+import { api, CACHE_KEYS } from "@/lib/api";
+import { queryClient } from "@/lib/query-client";
 import { useMutation } from "@tanstack/react-query";
 import { InferRequestType } from "hono";
 
@@ -19,6 +20,11 @@ export function useCreateKnowledgeBase() {
       const json = await response.json();
 
       return json.data;
+    },
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: CACHE_KEYS.knowledgeBases,
+      });
     },
   });
 

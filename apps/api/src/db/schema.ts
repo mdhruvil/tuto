@@ -8,6 +8,7 @@ import {
   uniqueIndex,
   serial,
   index,
+  vector,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -84,6 +85,38 @@ export const documentRelations = relations(document, ({ one }) => ({
   knowledgeBase: one(knowledgeBase, {
     fields: [document.knowledgeBaseId],
     references: [knowledgeBase.id],
+  }),
+}));
+
+export const documentChunk = pgTable(
+  "document_chunk",
+  {
+    id: serial("id").primaryKey(),
+    documentId: integer("documentId")
+      .notNull()
+      .references(() => document.id),
+    pageContent: text("pageContent").notNull(),
+    embedding: vector("embedding", { dimensions: 1536 }).notNull(),
+    metadata: text("metadata"),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt")
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+  },
+  (table) => ({
+    documentIdIdx: index("documentIdIdx").on(table.documentId),
+    embeddingIdx: index("embeddingIdx").using(
+      "hnsw",
+      table.embedding.op("vector_cosine_ops")
+    ),
+  })
+);
+
+export const documentChunkRelations = relations(documentChunk, ({ one }) => ({
+  document: one(document, {
+    fields: [documentChunk.documentId],
+    references: [document.id],
   }),
 }));
 

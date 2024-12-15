@@ -15,6 +15,13 @@
       "when": 1734120940295,
       "tag": "0001_ambiguous_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734257022851,
+      "tag": "0002_stormy_punisher",
+      "breakpoints": true
     }
   ]
 }

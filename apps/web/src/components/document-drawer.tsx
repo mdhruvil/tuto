@@ -11,82 +11,10 @@ import {
 import { useCreateDocument } from "@/hooks/use-document-mutations";
 import { useUploadFile } from "@/hooks/use-file-upload";
 import { formatDate } from "@/lib/utils";
-import { FileIcon } from "lucide-react";
+import { FileIcon, FileTextIcon } from "lucide-react";
 import { toast } from "sonner";
-
-// Mock data for documents
-// const MOCK_DOCUMENTS = [
-//   {
-//     id: 1,
-//     name: "Dynamic Logic Circuits",
-//     type: "pdf",
-//     createdAt: "2024-01-15T10:00:00Z",
-//     updatedAt: "2024-01-15T10:00:00Z",
-//   },
-//   {
-//     id: 2,
-//     name: "System Architecture",
-//     type: "docx",
-//     createdAt: "2024-01-14T15:30:00Z",
-//     updatedAt: "2024-01-14T15:30:00Z",
-//   },
-//   {
-//     id: 3,
-//     name: "Database Design Patterns",
-//     type: "pdf",
-//     createdAt: "2024-01-13T09:15:00Z",
-//     updatedAt: "2024-01-13T09:15:00Z",
-//   },
-//   {
-//     id: 4,
-//     name: "Network Security Protocols",
-//     type: "pdf",
-//     createdAt: "2024-01-12T14:20:00Z",
-//     updatedAt: "2024-01-12T14:20:00Z",
-//   },
-//   {
-//     id: 5,
-//     name: "Cloud Computing Fundamentals",
-//     type: "docx",
-//     createdAt: "2024-01-11T11:45:00Z",
-//     updatedAt: "2024-01-11T11:45:00Z",
-//   },
-//   {
-//     id: 6,
-//     name: "Software Testing Methods",
-//     type: "pdf",
-//     createdAt: "2024-01-10T16:30:00Z",
-//     updatedAt: "2024-01-10T16:30:00Z",
-//   },
-//   {
-//     id: 7,
-//     name: "API Documentation",
-//     type: "docx",
-//     createdAt: "2024-01-09T13:25:00Z",
-//     updatedAt: "2024-01-09T13:25:00Z",
-//   },
-//   {
-//     id: 8,
-//     name: "Machine Learning Basics",
-//     type: "pdf",
-//     createdAt: "2024-01-08T10:10:00Z",
-//     updatedAt: "2024-01-08T10:10:00Z",
-//   },
-//   {
-//     id: 9,
-//     name: "Project Requirements",
-//     type: "docx",
-//     createdAt: "2024-01-07T15:50:00Z",
-//     updatedAt: "2024-01-07T15:50:00Z",
-//   },
-//   {
-//     id: 10,
-//     name: "Code Review Guidelines",
-//     type: "pdf",
-//     createdAt: "2024-01-06T12:40:00Z",
-//     updatedAt: "2024-01-06T12:40:00Z",
-//   },
-// ];
+import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 type DocumentDrawerProps = {
   documents: {
@@ -99,6 +27,30 @@ type DocumentDrawerProps = {
   knowledgeBaseId: string;
 };
 
+/**
+ * !ALERT: I wasn't able make this work it in cloudflare workers so we chunk the documents in the browser (this is not ideal)
+ * Converts a PDF file to chunks of text We are using the WebPDFLoader from Langchain to load the PDF file and then splitting the documents into chunks
+ * @param file File to convert
+ * @returns Array of chunks
+ */
+async function pdfToChunks(file: File) {
+  const pdfBlob = new Blob([file], { type: "application/pdf" });
+
+  const loader = new WebPDFLoader(pdfBlob, {
+    pdfjs: () => import("pdfjs-dist/legacy/build/pdf.mjs"),
+  });
+  const docs = await loader.load();
+
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200,
+  });
+
+  const chunks = await splitter.splitDocuments(docs);
+
+  return chunks;
+}
+
 export function DocumentDrawer({
   documents,
   knowledgeBaseId,
@@ -110,7 +62,9 @@ export function DocumentDrawer({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button>Add Documents</Button>
+        <Button>
+          <FileTextIcon size={20} />
+        </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-7xl mx-auto h-[calc(80vh)]">
         <div className="h-full overflow-y-auto">
@@ -123,15 +77,26 @@ export function DocumentDrawer({
           <div className="p-6 space-y-4">
             <FileUploader
               onUpload={async (files: File[]) => {
+                const loadingToast = toast.loading("Chunking documents...");
+                const chunks = await Promise.all(
+                  files.map((file) => pdfToChunks(file))
+                ).catch((error) => {
+                  console.error(error);
+                  toast.error("Failed to chunk documents");
+                  toast.dismiss(loadingToast);
+                  throw error;
+                });
+                toast.dismiss(loadingToast);
                 const uploadedFiles = await onUpload(files);
                 if (!uploadedFiles) {
                   return console.error("No files uploaded");
                 }
                 toast.promise(
                   createDocument.mutateAsync({
-                    documents: uploadedFiles.map((file) => ({
+                    documents: uploadedFiles.map((file, i) => ({
                       name: file.name,
                       url: file.url,
+                      embeddings: chunks[i],
                     })),
                   }),
                   {

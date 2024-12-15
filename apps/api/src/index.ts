@@ -9,12 +9,20 @@ import { knowledgeBaseRouter } from "./routes/knowledge-base";
 import { cors } from "hono/cors";
 import { createRouteHandler } from "uploadthing/server";
 import { fileHandlers, uploadRouter } from "./lib/ut";
+import { embedPdf } from "./lib/ai";
+import { DocumentChunks } from "./db/queries/document_chunks";
+import { chatRouter } from "./routes/chat";
 type Bindings = {
   DATABASE_URL: string;
   BETTER_AUTH_SECRET: string;
   TRUSTED_ORIGINS: string;
   UPLOADTHING_TOKEN: string;
   ENVIRONMENT: string;
+  AZURE_OPENAI_API_KEY: string;
+  AZURE_OPENAI_API_VERSION: string;
+  AZURE_OPENAI_API_INSTANCE_NAME: string;
+  AZURE_OPENAI_DEPLOYMENT: string;
+  AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT: string;
 };
 
 type Variables = {
@@ -55,6 +63,7 @@ const app = new Hono<Env>({ strict: true })
   })
   .route("/knowledge-base", knowledgeBaseRouter)
   .route("/knowledge-base/:knowledgeBaseId/document", documentRouter)
+  .route("/chat", chatRouter)
   .all("/ut", async (c) => {
     const handlers = fileHandlers();
     return handlers(c.req.raw);
@@ -79,4 +88,4 @@ const app = new Hono<Env>({ strict: true })
 
 export type AppType = typeof app;
 
-export default instrument(app);
+export default app;

@@ -20,12 +20,19 @@
     "auth": "pnpx @better-auth/cli"
   },
   "dependencies": {
+    "@ai-sdk/azure": "^1.0.10",
+    "@azure/openai": "^2.0.0",
+    "@langchain/community": "^0.3.19",
+    "@langchain/core": "^0.3.23",
     "@neondatabase/serverless": "^0.10.1",
     "@tuto/shared": "workspace:*",
+    "ai": "^4.0.18",
     "better-auth": "^1.0.19",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.36.4",
     "hono": "^4.6.7",
+    "langchain": "^0.3.7",
+    "pdfjs-dist": "^4.9.155",
     "uploadthing": "^7.4.1",
     "zod": "^3.24.1"
   },

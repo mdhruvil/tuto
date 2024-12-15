@@ -9,6 +9,7 @@ import { queryClient } from "./lib/query-client";
 import { KnowledgeBase } from "./routes/dashboard/[knowLedgebaseId]";
 import { KnowledgeBases } from "./routes/dashboard/knowledge-bases";
 import { DashboardLayout } from "./routes/dashboard/layout";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,18 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  useEffect(() => {
+    async function init() {
+      const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+      const pdfjsWorker = await import(
+        "pdfjs-dist/legacy/build/pdf.worker.mjs?url"
+      );
+      pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
+    }
+    window.onload = () => {
+      init();
+    };
+  }, []);
   return (
     <>
       <QueryClientProvider client={queryClient}>

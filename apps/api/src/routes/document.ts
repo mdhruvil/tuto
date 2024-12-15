@@ -4,6 +4,8 @@ import { z } from "zod";
 import { Env } from "..";
 import { DBDocument } from "../db/queries/documents";
 import { zValidator } from "../middleware/zod";
+import { embedChunks } from "../lib/ai";
+import { DocumentChunks } from "../db/queries/document_chunks";
 
 const app = new Hono<Env>()
   .get(
@@ -57,7 +59,11 @@ const app = new Hono<Env>()
       "json",
       z.object({
         documents: z.array(
-          documentInsertSchema.omit({ createdBy: true, knowledgeBaseId: true })
+          documentInsertSchema
+            .extend({
+              embeddings: z.any().optional(),
+            })
+            .omit({ createdBy: true, knowledgeBaseId: true })
         ),
       })
     ),
@@ -69,7 +75,7 @@ const app = new Hono<Env>()
       }
       const { knowledgeBaseId } = c.req.valid("param");
 
-      const document = await DBDocument.create({
+      const documents = await DBDocument.create({
         data: c.req.valid("json").documents.map((document) => ({
           ...document,
           createdBy: user.id,
@@ -77,7 +83,24 @@ const app = new Hono<Env>()
         })),
       });
 
-      return c.json({ data: document, success: true }, 201);
+      const chunksPerDocument = await Promise.all(
+        c.req
+          .valid("json")
+          .documents.map((document) => embedChunks(document.embeddings))
+      );
+
+      const chunks = chunksPerDocument
+        .map((c, i) => {
+          return c.map((chunk) => ({
+            ...chunk,
+            documentId: documents[i].id,
+          }));
+        })
+        .flat();
+
+      await DocumentChunks.create(chunks);
+
+      return c.json({ data: documents, success: true, chunks }, 201);
     }
   )
   .put(

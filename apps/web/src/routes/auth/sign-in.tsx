@@ -139,12 +139,21 @@ export function SignIn() {
         </Form>
       </CardContent>
       <CardFooter>
-        <div className="flex justify-center w-full border-t py-4">
-          <p className="text-center text-xs text-neutral-500">
-            <a href="/auth/sign-up" className="underline">
-              <span className="dark:text-orange-200/90">Create an account</span>
-            </a>
-          </p>
+        <div className="w-full">
+          <div className="flex justify-center w-full border-t py-4">
+            <p className="text-center text-xs text-neutral-500">
+              <a href="/auth/sign-up" className="underline">
+                <span className="dark:text-orange-200/90">
+                  Create an account
+                </span>
+              </a>
+            </p>
+          </div>
+          <div className="mt-4 text-xs text-muted-foreground">
+            Demo user: demo@tuto.ai
+            <br />
+            Demo password: qwer1234
+          </div>
         </div>
       </CardFooter>
     </Card>

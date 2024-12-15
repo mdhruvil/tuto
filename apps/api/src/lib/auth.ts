@@ -38,6 +38,8 @@ export function getAuth({
     advanced: {
       defaultCookieAttributes: {
         sameSite: "none",
+        secure: true,
+        httpOnly: true,
       },
     },
   });

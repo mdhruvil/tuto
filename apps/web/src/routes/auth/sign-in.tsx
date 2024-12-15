@@ -143,13 +143,8 @@ export function SignIn() {
       <CardFooter>
         <div className="flex justify-center w-full border-t py-4">
           <p className="text-center text-xs text-neutral-500">
-            Powered by{" "}
-            <Link
-              to="https://better-auth.com"
-              className="underline"
-              target="_blank"
-            >
-              <span className="dark:text-orange-200/90">better-auth.</span>
+            <Link to="/auth/sign-up" className="underline">
+              <span className="dark:text-orange-200/90">Create an account</span>
             </Link>
           </p>
         </div>

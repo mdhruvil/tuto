@@ -1,68 +1,82 @@
-## 🪿 HONC
+# Tuto - Chat with your Knowledge Base
 
-This is a project created with the `create-honc-app` template.
+Tuto is a modern web application to chat with your knowledge base, built with the HONC stack (Hono, OpenAI, Neon, Cloudflare).
+I specifically created this project to help me learn quickly in exam season.
 
-Learn more about the HONC stack on the [website](https://honc.dev) or the main [repo](https://github.com/fiberplane/create-honc-app).
+## Features and TODOs
 
-### Getting started
+- [x] Auth
+  - [x] Email
+  - [ ] Socials
+- [x] Knowledge Base
+- [x] Document Upload
+- [x] Document Processing
+- [x] Chat
+  - [ ] Edit past chat
+- [ ] AI
+  - [x] Embeddings
+  - [x] Vector Search
+  - [ ] Multiple AI models
+  - [ ] Add voice input voice output. (Maybe using Gemini 2 or OpenAI Real Time API)
+- [ ] Improve PDF viewer
+- [ ] Ability to create a quiz from the knowledge base (kinda like this [https://github.com/anis-marrouchi/vercel-ai-sdk-quiz/](https://github.com/anis-marrouchi/vercel-ai-sdk-quiz/))
+- [ ] Ability to create a flashcard from the knowledge base
+- [ ] Ability to save chat history
+- [ ] Ability to have multiple chats in one knowledge base
+- [ ] A separate document manager so users can resuse uploaded documents
 
-Make sure you have Neon set up and configured with your database. Create a .dev.vars file with the `DATABASE_URL` key and value (see: `.dev.vars.example`).
+## Prerequisites
 
-### Project structure
+- Node.js 18+ and pnpm
+- Neon Database account. Enable pg_vector extension in your database. You can follow this guide: [https://neon.tech/docs/extensions/pgvector#enable-the-pgvector-extension](https://neon.tech/docs/extensions/pgvector#enable-the-pgvector-extension)
+- Azure OpenAI account (for AI features)
+- Cloudflare account (for deployment)
 
-```#
-├── src
-│   ├── index.ts # Hono app entry point
-│   └── db
-│       └── schema.ts # Database schema
-├── seed.ts # Optional seeding script
-├── .dev.vars.example # Example .dev.vars file
-├── wrangler.toml # Cloudflare Workers configuration
-├── drizzle.config.ts # Drizzle configuration
-├── tsconfig.json # TypeScript configuration
-└── package.json
+```
+.
+├── apps
+│   ├── api # HONC app
+│   └── web # React app with Vite
+├── package.json
+├── packages
+│   └── shared
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── README.md
+├── tsconfig.json
+└── turbo.json
 ```
 
-### Commands
+## Setup Environment
 
-Run the migrations and (optionally) seed the database:
+1. Create a `.dev.vars` file in the `apps/api` directory. Dont forget to replace the placeholders with your own values.
 
-```sh
-# this is a convenience script that runs db:generate, db:migrate, and db:seed
-npm run db:setup
+```bash
+cp apps/api/.dev.vars.example apps/api/.dev.vars
 ```
 
-Run the development server:
+2. Create a `.env` file in the `apps/web` directory. You dont need change anything.
 
-```sh
-npm run dev
+```bash
+cp apps/web/.env.example apps/web/.env
 ```
 
-### Developing
+3. Install dependencies
 
-When you iterate on the database schema, you'll need to generate a new migration and apply it:
-
-```sh
-npm run db:generate
-npm run db:migrate
+```bash
+pnpm install
 ```
 
-### Deploying
+4. Migrate the database
 
-Set your `DATABASE_URL` secret (and any other secrets you need) with wrangler:
-
-```sh
-npx wrangler secret put DATABASE_URL
+```bash
+cd apps/api
+pnpm db:migrate
 ```
 
-Finally, change the name of the project in `wrangler.toml` to something appropriate for your project
+5. Run the development server
 
-```toml
-name = "my-neon-project"
-```
-
-Deploy with wrangler:
-
-```sh
-npm run deploy
+```bash
+# make sure to run from the root directory
+pnpm dev
 ```

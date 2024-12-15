@@ -1,17 +1,14 @@
-import { instrument } from "@fiberplane/hono-otel";
 import { Hono } from "hono";
 import { contextStorage } from "hono/context-storage";
+import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import { ZodError } from "zod";
 import { auth } from "./lib/auth";
+import { fileHandlers } from "./lib/ut";
+import { chatRouter } from "./routes/chat";
 import { documentRouter } from "./routes/document";
 import { knowledgeBaseRouter } from "./routes/knowledge-base";
-import { cors } from "hono/cors";
-import { createRouteHandler } from "uploadthing/server";
-import { fileHandlers, uploadRouter } from "./lib/ut";
-import { embedPdf } from "./lib/ai";
-import { DocumentChunks } from "./db/queries/document_chunks";
-import { chatRouter } from "./routes/chat";
+
 type Bindings = {
   DATABASE_URL: string;
   BETTER_AUTH_SECRET: string;

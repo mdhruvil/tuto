@@ -30,9 +30,7 @@ export const uploadRouter = {
 
       return {};
     })
-    .onUploadComplete((data) => {
-      console.log("upload completed", data);
-    }),
+    .onUploadComplete((data) => {}),
 } satisfies FileRouter;
 
 export const fileHandlers = () => {

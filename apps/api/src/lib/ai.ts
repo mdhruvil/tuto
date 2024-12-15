@@ -110,6 +110,5 @@ export const findRelevantContent = async (
     )
     .orderBy((t) => desc(t.similarity))
     .limit(1);
-  console.log({ similarGuides, documentIds });
   return similarGuides;
 };

@@ -3,6 +3,10 @@
 Tuto is a modern web application to chat with your knowledge base, built with the HONC stack (Hono, OpenAI, Neon, Cloudflare).
 I specifically created this project to help me learn quickly in exam season.
 
+## [Demo](https://www.youtube.com/watch?v=rdfsIKXmznU)
+
+[https://www.youtube.com/watch?v=rdfsIKXmznU](https://www.youtube.com/watch?v=rdfsIKXmznU)
+
 ## Features and TODOs
 
 - [x] Auth

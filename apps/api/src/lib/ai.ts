@@ -5,7 +5,7 @@ import type { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Env } from "..";
 import { embed, embedMany } from "ai";
-import { desc, eq, gt } from "drizzle-orm";
+import { and, desc, eq, gt, inArray } from "drizzle-orm";
 import { cosineDistance } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { document, documentChunk } from "../db/schema";
@@ -81,7 +81,10 @@ export async function generateEmbedding(value: string) {
   return embedding;
 }
 
-export const findRelevantContent = async (userQuery: string) => {
+export const findRelevantContent = async (
+  userQuery: string,
+  documentIds: number[]
+) => {
   const userQueryEmbedded = await generateEmbedding(userQuery);
   const similarity = sql<number>`1 - (${cosineDistance(
     documentChunk.embedding,
@@ -102,8 +105,11 @@ export const findRelevantContent = async (userQuery: string) => {
     })
     .from(documentChunk)
     .leftJoin(document, eq(documentChunk.documentId, document.id))
-    .where(gt(similarity, 0.5))
+    .where(
+      and(gt(similarity, 0.5), inArray(documentChunk.documentId, documentIds))
+    )
     .orderBy((t) => desc(t.similarity))
     .limit(1);
+  console.log({ similarGuides, documentIds });
   return similarGuides;
 };

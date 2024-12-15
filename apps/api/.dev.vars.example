@@ -2,6 +2,7 @@ DATABASE_URL=
 FPX_ENDPOINT=
 
 BETTER_AUTH_SECRET=
+## TRUSTED_ORIGINS is a comma-separated list of origins that are allowed to make requests to the API.
 TRUSTED_ORIGINS=
 UPLOADTHING_TOKEN=
 ENVIRONMENT=development

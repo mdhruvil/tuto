@@ -23,6 +23,9 @@ export function KnowledgeBase() {
     maxSteps: 3,
     api: import.meta.env.VITE_API_URL + "/api/chat",
     credentials: "include",
+    body: {
+      documentIds: data?.documents.map((d) => d.id),
+    },
   });
 
   console.log(messages);
@@ -70,15 +73,7 @@ export function KnowledgeBase() {
               {messages.map((m) => (
                 <ChatMessage key={m.id} message={m} />
               ))}
-              {isChatLoading && (
-                <ChatMessage
-                  message={{
-                    id: "loading",
-                    role: "assistant",
-                    content: "Thinking...",
-                  }}
-                />
-              )}
+              {isChatLoading && <ChatMessage loading />}
             </>
           )}
         </div>

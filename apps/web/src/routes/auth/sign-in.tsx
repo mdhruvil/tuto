@@ -22,7 +22,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -35,7 +34,6 @@ const signInSchema = z.object({
 type SignInValues = z.infer<typeof signInSchema>;
 
 export function SignIn() {
-  const navigate = useNavigate();
   const form = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -52,7 +50,7 @@ export function SignIn() {
           toast.error(error.message);
         },
         onSuccess: () => {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         },
       });
     },
@@ -143,9 +141,9 @@ export function SignIn() {
       <CardFooter>
         <div className="flex justify-center w-full border-t py-4">
           <p className="text-center text-xs text-neutral-500">
-            <Link to="/auth/sign-up" className="underline">
+            <a href="/auth/sign-up" className="underline">
               <span className="dark:text-orange-200/90">Create an account</span>
-            </Link>
+            </a>
           </p>
         </div>
       </CardFooter>

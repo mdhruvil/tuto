@@ -38,7 +38,14 @@ export function UserProfileButton() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async () => {
+            await signOut();
+            window.location.href = "/auth/sign-in";
+          }}
+        >
+          Sign out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

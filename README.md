@@ -5,12 +5,16 @@ I specifically created this project to help me learn quickly in exam season.
 
 ## [Demo](https://www.youtube.com/watch?v=rdfsIKXmznU)
 
+Live demo is hosted on cloudflare free plan. better-auth is often exceeds the timeout limit of cloudflare workers free plan. To get better experience, you can run it locally or watch the demo video to get more info.
+
+[https://tuto.mdhruvil.codes/](https://tuto.mdhruvil.codes/)
 [https://www.youtube.com/watch?v=rdfsIKXmznU](https://www.youtube.com/watch?v=rdfsIKXmznU)
 
 ## Features and TODOs
 
 - [x] Auth
   - [x] Email
+  - [ ] Migrate from better-auth (better-auth exceeds the timeout limit of cloudflare workers free plan)
   - [ ] Socials
 - [x] Knowledge Base
 - [x] Document Upload

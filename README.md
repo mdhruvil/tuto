@@ -12,6 +12,8 @@ I specifically created this project to help me learn quickly in exam season.
 
 ## Screenshots
 
+[SCREENSHOTS.md](./SCREENSHOTS.md)
+
 ## Features and TODOs
 
 - [x] Auth

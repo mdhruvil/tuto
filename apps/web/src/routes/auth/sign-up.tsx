@@ -77,8 +77,9 @@ export function SignUp() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Card className="z-50 rounded-md rounded-t-none max-w-md">
+      <Card className="z-50 rounded max-w-lg">
         <CardHeader>
+          <img src="/logo.svg" alt="Tuto" className="size-8 mb-3" />
           <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
           <CardDescription className="text-xs md:text-sm">
             Enter your information to create an account

@@ -10,6 +10,8 @@ Live demo is hosted on cloudflare free plan. better-auth is often exceeds the ti
 [https://tuto.mdhruvil.codes/](https://tuto.mdhruvil.codes/)
 [https://www.youtube.com/watch?v=rdfsIKXmznU](https://www.youtube.com/watch?v=rdfsIKXmznU)
 
+## Screenshots
+
 ## Features and TODOs
 
 - [x] Auth
